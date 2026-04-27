@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #0E0E0E;
+  --color-foreground: #F0EDE8;
+  --color-ark-red: #C41E1E;
+  --color-ark-red-dark: #8B0000;
+  --color-ark-charcoal: #2B2B2B;
+  --color-ark-gray: #888888;
+  --color-ark-border: #2A2A2A;
+  --font-display: var(--font-bebas);
+  --font-sans: var(--font-inter);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: #0E0E0E;
+  color: #F0EDE8;
+  font-family: var(--font-inter), Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #C41E1E;
+  color: #F0EDE8;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0E0E0E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C41E1E;
+  border-radius: 2px;
+}
+
+.font-display {
+  font-family: var(--font-bebas), var(--font-display), Impact, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #C41E1E 0%, #FF3B3B 50%, #C41E1E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.red-line {
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #C41E1E;
+}
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.noise-bg::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+}
+
+.section-tag {
+  font-family: var(--font-inter), Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #C41E1E;
+}
+
+.project-card-overlay {
+  background: linear-gradient(to top, rgba(14,14,14,0.95) 0%, rgba(14,14,14,0.3) 60%, transparent 100%);
+}
+
+@keyframes scroll-indicator {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.scroll-dot {
+  animation: scroll-indicator 1.5s ease-in-out infinite;
+}
+
+@keyframes draw-line {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #C41E1E;
+  transition: width 0.3s ease;
+}
+
+.nav-link-underline:hover::after,
+.nav-link-underline.active::after {
+  width: 100%;
+}
+
+.btn-primary {
+  background: #C41E1E;
+  color: #F0EDE8;
+  font-family: var(--font-inter), Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid #C41E1E;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: #C41E1E;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #F0EDE8;
+  font-family: var(--font-inter), Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid #F0EDE8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  background: #F0EDE8;
+  color: #0E0E0E;
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(196, 30, 30, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 30, 30, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.diagonal-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(196, 30, 30, 0.03) 10px,
+    rgba(196, 30, 30, 0.03) 11px
+  );
+}
