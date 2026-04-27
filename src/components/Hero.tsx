@@ -2,12 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-const words = ["ARKEIM"];
 const subtitle = ["ARQUITECTURA", "DISEÑO", "CONSTRUCCIÓN"];
 
 function SplitText({ text, delay = 0 }: { text: string; delay?: number }) {
   return (
-    <span className="inline-block overflow-hidden">
+    <>
       {text.split("").map((char, i) => (
         <motion.span
           key={i}
@@ -15,120 +14,104 @@ function SplitText({ text, delay = 0 }: { text: string; delay?: number }) {
           initial={{ y: "110%", opacity: 0 }}
           animate={{ y: "0%", opacity: 1 }}
           transition={{
-            duration: 0.8,
-            delay: delay + i * 0.05,
-            ease: [0.25, 0.46, 0.45, 0.94],
+            duration: 0.75,
+            delay: delay + i * 0.055,
+            ease: [0.22, 1, 0.36, 1],
           }}
         >
-          {char === " " ? " " : char}
+          {char}
         </motion.span>
       ))}
-    </span>
+    </>
   );
 }
 
 export default function Hero() {
-  const containerRef = useRef<HTMLElement>(null);
   const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
+  useEffect(() => { setLoaded(true); }, []);
 
   return (
     <section
       id="inicio"
-      ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0E0E0E]"
+      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#0A0A0A]"
     >
-      {/* Background grid pattern */}
-      <div className="absolute inset-0 grid-pattern opacity-100" />
+      {/* Subtle grid */}
+      <div className="absolute inset-0 grid-pattern" />
 
-      {/* Diagonal accent line */}
+      {/* Vertical accent lines — contained, no overflow */}
       <div
-        className="absolute top-0 right-0 w-px h-full opacity-20"
-        style={{ background: "linear-gradient(to bottom, transparent, #C41E1E 40%, transparent)" }}
+        className="absolute top-0 right-[8%] w-px h-full opacity-15 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent 0%, #C41E1E 40%, transparent 100%)" }}
       />
       <div
-        className="absolute top-0 left-1/4 w-px h-full opacity-10"
-        style={{ background: "linear-gradient(to bottom, transparent, #C41E1E 30%, transparent)" }}
+        className="absolute top-0 left-[8%] w-px h-full opacity-08 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent 0%, #C41E1E 30%, transparent 100%)" }}
       />
 
-      {/* Large background text */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
-        aria-hidden="true"
-      >
-        <span
-          className="font-display text-[28vw] font-normal leading-none opacity-[0.03] text-[#F0EDE8] tracking-[0.05em]"
-        >
-          ARK
-        </span>
-      </div>
-
-      {/* Red geometric accent shapes */}
+      {/* Animated geometric accents */}
       <motion.div
-        className="absolute top-1/4 right-8 lg:right-24 w-1 h-32 bg-[#C41E1E]"
+        className="absolute top-1/4 right-[8%] w-px h-24 bg-[#C41E1E] origin-top"
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
-        transition={{ delay: 1.4, duration: 0.6, ease: "easeOut" }}
-        style={{ transformOrigin: "top" }}
+        transition={{ delay: 1.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       />
       <motion.div
-        className="absolute bottom-1/3 left-8 lg:left-24 w-16 h-1 bg-[#C41E1E]"
+        className="absolute bottom-1/3 left-[8%] h-px w-14 bg-[#C41E1E] origin-left"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
-        transition={{ delay: 1.6, duration: 0.6, ease: "easeOut" }}
-        style={{ transformOrigin: "left" }}
+        transition={{ delay: 1.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      {/* Main content */}
-      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-        {/* Small label */}
+      {/* ── Main content ─────────────────────────────── */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-8 lg:px-16 text-center">
+
+        {/* Label */}
         <motion.div
-          className="flex items-center justify-center gap-3 mb-8"
-          initial={{ opacity: 0, y: 20 }}
+          className="flex items-center justify-center gap-4 mb-10"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <span className="red-line inline-block" />
+          <span className="red-line" />
           <span className="section-tag">Estudio de Arquitectura</span>
-          <span className="red-line inline-block" />
+          <span className="red-line" />
         </motion.div>
 
-        {/* Main title */}
-        <h1 className="font-display text-[18vw] sm:text-[15vw] lg:text-[13vw] leading-none text-[#F0EDE8] tracking-[0.04em] mb-0">
-          {loaded && <SplitText text="ARKEIM" delay={0.4} />}
-        </h1>
+        {/* Title — overflow-hidden clips the SplitText animation correctly */}
+        <div className="overflow-hidden leading-none mb-6">
+          <h1 className="font-display text-[22vw] sm:text-[18vw] md:text-[16vw] lg:text-[14vw] xl:text-[12vw] leading-none text-[#F0EDE8] tracking-[0.03em]">
+            {loaded && <SplitText text="ARKEIM" delay={0.4} />}
+          </h1>
+        </div>
 
-        {/* Red separator line */}
+        {/* Red rule */}
         <motion.div
-          className="flex justify-center my-4"
+          className="flex justify-center mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1 }}
         >
           <motion.div
-            className="h-0.5 bg-[#C41E1E]"
+            className="h-px bg-[#C41E1E]"
             initial={{ width: 0 }}
-            animate={{ width: "120px" }}
-            transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+            animate={{ width: 100 }}
+            transition={{ delay: 1.2, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           />
         </motion.div>
 
-        {/* Subtitle */}
-        <div className="flex items-center justify-center gap-3 lg:gap-6 flex-wrap mt-2">
+        {/* Subtitle pills */}
+        <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-2 mb-12">
           {subtitle.map((word, i) => (
             <motion.span
               key={word}
-              className="font-sans text-xs sm:text-sm font-semibold tracking-[0.3em] text-[#888]"
-              initial={{ opacity: 0, y: 10 }}
+              className="text-[0.65rem] font-bold tracking-[0.3em] text-[#666]"
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.3 + i * 0.1, duration: 0.5 }}
+              transition={{ delay: 1.35 + i * 0.1, duration: 0.5 }}
             >
               {word}
               {i < subtitle.length - 1 && (
-                <span className="ml-3 lg:ml-6 text-[#C41E1E]">·</span>
+                <span className="ml-6 text-[#C41E1E] opacity-60">·</span>
               )}
             </motion.span>
           ))}
@@ -136,34 +119,30 @@ export default function Hero() {
 
         {/* Tagline */}
         <motion.p
-          className="font-sans text-sm lg:text-base text-[#888] mt-10 max-w-xl mx-auto leading-relaxed"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-sm text-[#555] mb-12 tracking-wide"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6, duration: 0.6 }}
+          transition={{ delay: 1.65, duration: 0.6 }}
         >
           Arquitectura con criterio.{" "}
-          <span className="text-[#F0EDE8]">Proyectos que se construyen.</span>
+          <span className="text-[#999]">Proyectos que se construyen.</span>
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* CTAs */}
         <motion.div
-          className="flex items-center justify-center gap-4 mt-10"
-          initial={{ opacity: 0, y: 20 }}
+          className="flex items-center justify-center gap-4 flex-wrap"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
+          transition={{ delay: 1.85, duration: 0.6 }}
         >
           <button
-            onClick={() => {
-              document.querySelector("#proyectos")?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => document.querySelector("#proyectos")?.scrollIntoView({ behavior: "smooth" })}
             className="btn-primary"
           >
             Ver Proyectos
           </button>
           <button
-            onClick={() => {
-              document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
             className="btn-outline"
           >
             Evaluar Proyecto
@@ -173,44 +152,31 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 0.6 }}
+        transition={{ delay: 2.3, duration: 0.6 }}
       >
-        <span className="section-tag text-[0.6rem]">Scroll</span>
-        <div className="w-px h-12 relative overflow-hidden">
-          <motion.div
-            className="absolute top-0 left-0 w-full bg-[#C41E1E]"
-            initial={{ height: 0, top: 0 }}
-            animate={{ height: "100%", top: ["0%", "100%"] }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <div className="absolute inset-0 bg-[#2B2B2B]" style={{ zIndex: -1 }} />
-        </div>
+        <div
+          className="w-px h-10 bg-[#C41E1E] scroll-indicator-dot"
+          aria-hidden="true"
+        />
+        <span className="section-tag" style={{ fontSize: "0.55rem" }}>Scroll</span>
       </motion.div>
 
-      {/* Corner coordinates */}
-      <motion.div
-        className="absolute bottom-10 right-6 lg:right-12 text-[#2B2B2B] text-[0.6rem] font-mono tracking-widest"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+      {/* Corner metadata */}
+      <motion.span
+        className="absolute bottom-10 right-8 text-[#252525] text-[0.55rem] font-mono tracking-widest hidden lg:block"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.1 }}
       >
-        4.7110° N, 74.0721° W
-      </motion.div>
-      <motion.div
-        className="absolute bottom-10 left-6 lg:left-12 text-[#2B2B2B] text-[0.6rem] font-mono tracking-widest"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+        4.7110°N · 74.0721°W
+      </motion.span>
+      <motion.span
+        className="absolute bottom-10 left-8 text-[#252525] text-[0.55rem] font-mono tracking-widest hidden lg:block"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.1 }}
       >
         COL · EST. 2024
-      </motion.div>
+      </motion.span>
     </section>
   );
 }

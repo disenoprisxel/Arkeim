@@ -54,33 +54,33 @@ export default function Contact() {
     <section
       id="contacto"
       ref={ref}
-      className="relative py-32 lg:py-48 bg-[#0E0E0E] overflow-hidden"
+      className="relative w-full bg-[#111111] overflow-hidden"
     >
-      {/* Background text */}
-      <div
-        className="absolute left-0 bottom-0 font-display text-[18vw] text-[#F0EDE8] opacity-[0.015] leading-none select-none pointer-events-none"
-        aria-hidden="true"
-      >
-        CONTACTO
-      </div>
+      <div className="w-full h-px bg-[#1E1E1E]" />
+      <div className="w-24 h-px bg-[#C41E1E]" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="max-w-6xl mx-auto px-8 lg:px-16 py-28 lg:py-40">
+
+        {/* Section entry */}
+        <motion.div
+          className="flex items-center gap-6 mb-20"
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="section-num">05</span>
+          <span className="section-tag">Hablemos</span>
+          <div className="section-line" />
+        </motion.div>
+
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left: info */}
           <div>
-            <motion.div
-              className="section-tag mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              — Hablemos
-            </motion.div>
             <motion.h2
-              className="font-display text-6xl lg:text-8xl text-[#F0EDE8] leading-none mb-8"
-              initial={{ opacity: 0, y: 40 }}
+              className="font-display text-5xl lg:text-7xl text-[#F0EDE8] leading-none mb-8"
+              initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               EVALUAR
               <br />
@@ -88,8 +88,8 @@ export default function Contact() {
             </motion.h2>
 
             <motion.p
-              className="text-[#888] text-sm leading-relaxed mb-12 max-w-sm"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-[#555] text-sm leading-[1.8] mb-12 max-w-sm"
+              initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
@@ -265,6 +265,8 @@ export default function Contact() {
           </motion.div>
         </div>
       </div>
+
+      <div className="w-full h-px bg-[#1E1E1E]" />
     </section>
   );
 }

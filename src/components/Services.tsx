@@ -62,39 +62,36 @@ export default function Services() {
     <section
       id="servicios"
       ref={ref}
-      className="relative py-32 lg:py-48 bg-[#111] overflow-hidden"
+      className="relative w-full bg-[#0E0E0E] overflow-hidden"
     >
-      {/* Background number */}
-      <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[20vw] text-[#F0EDE8] opacity-[0.015] leading-none select-none pointer-events-none"
-        aria-hidden="true"
-      >
-        SVC
-      </div>
+      <div className="w-full h-px bg-[#1E1E1E]" />
+      <div className="w-24 h-px bg-[#C41E1E]" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="max-w-6xl mx-auto px-8 lg:px-16 py-28 lg:py-40">
+        {/* Section entry */}
+        <motion.div
+          className="flex items-center gap-6 mb-20"
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="section-num">02</span>
+          <span className="section-tag">Lo que hacemos</span>
+          <div className="section-line" />
+        </motion.div>
+
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-20 gap-6">
-          <div>
-            <motion.div
-              className="section-tag mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              — Lo que hacemos
-            </motion.div>
-            <motion.h2
-              className="font-display text-6xl lg:text-8xl text-[#F0EDE8] leading-none"
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-              SERVICIOS
-            </motion.h2>
-          </div>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
+          <motion.h2
+            className="font-display text-5xl lg:text-7xl text-[#F0EDE8] leading-none"
+            initial={{ opacity: 0, y: 32 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            SERVICIOS
+          </motion.h2>
           <motion.p
-            className="text-[#888] text-sm max-w-xs leading-relaxed"
+            className="text-[#555] text-sm max-w-xs leading-relaxed"
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ delay: 0.3, duration: 0.6 }}
@@ -104,11 +101,11 @@ export default function Services() {
         </div>
 
         {/* Services grid */}
-        <div className="grid lg:grid-cols-3 gap-0 border border-[#2A2A2A]">
+        <div className="grid lg:grid-cols-3 gap-0 border border-[#1E1E1E]">
           {services.map((service, i) => (
             <motion.div
               key={service.number}
-              className="group relative p-8 lg:p-10 border-r border-[#2A2A2A] last:border-r-0 cursor-default overflow-hidden"
+              className="group relative p-8 lg:p-10 border-r border-[#1E1E1E] last:border-r-0 cursor-default overflow-hidden"
               initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -155,6 +152,8 @@ export default function Services() {
           ))}
         </div>
       </div>
+
+      <div className="w-full h-px bg-[#1E1E1E]" />
     </section>
   );
 }

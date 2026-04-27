@@ -36,33 +36,32 @@ export default function About() {
     <section
       id="sobre"
       ref={ref}
-      className="relative py-32 lg:py-48 bg-[#111] overflow-hidden"
+      className="relative w-full bg-[#0E0E0E] overflow-hidden"
     >
-      {/* Background accent */}
-      <div
-        className="absolute right-0 top-0 w-1/2 h-full opacity-[0.02] pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse at right, #C41E1E 0%, transparent 70%)",
-        }}
-      />
+      <div className="w-full h-px bg-[#1E1E1E]" />
+      <div className="w-24 h-px bg-[#C41E1E]" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="max-w-6xl mx-auto px-8 lg:px-16 py-28 lg:py-40">
+        {/* Section entry */}
+        <motion.div
+          className="flex items-center gap-6 mb-20"
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="section-num">04</span>
+          <span className="section-tag">Quiénes somos</span>
+          <div className="section-line" />
+        </motion.div>
+
         {/* Header + intro */}
-        <div className="grid lg:grid-cols-2 gap-16 mb-24">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 mb-24">
           <div>
-            <motion.div
-              className="section-tag mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              — Quiénes somos
-            </motion.div>
             <motion.h2
-              className="font-display text-6xl lg:text-8xl text-[#F0EDE8] leading-none mb-8"
-              initial={{ opacity: 0, y: 40 }}
+              className="font-display text-5xl lg:text-7xl text-[#F0EDE8] leading-none mb-10"
+              initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               NOSOTROS
             </motion.h2>
@@ -88,11 +87,11 @@ export default function About() {
           </div>
 
           {/* Values */}
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-4">
             {values.map((value, i) => (
               <motion.div
                 key={value.title}
-                className="flex gap-4 p-6 border border-[#2A2A2A] hover:border-[#C41E1E] transition-colors duration-300 group"
+                className="flex gap-4 p-5 border border-[#1E1E1E] hover:border-[#C41E1E] transition-colors duration-300 group"
                 initial={{ opacity: 0, x: 30 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.2 + i * 0.12, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -108,20 +107,21 @@ export default function About() {
         </div>
 
         {/* Process */}
-        <div className="border-t border-[#2A2A2A] pt-16">
+        <div className="border-t border-[#1E1E1E] pt-16">
           <motion.div
-            className="section-tag mb-10"
+            className="flex items-center gap-4 mb-12"
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ delay: 0.5 }}
           >
-            — Nuestro proceso
+            <span className="section-tag">Nuestro proceso</span>
+            <div className="section-line" />
           </motion.div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#2A2A2A]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#1A1A1A]">
             {process.map((step, i) => (
               <motion.div
                 key={step.step}
-                className="relative p-8 bg-[#111] group hover:bg-[#141414] transition-colors duration-300"
+                className="relative p-8 bg-[#0E0E0E] group hover:bg-[#131313] transition-colors duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.6 + i * 0.1, duration: 0.6 }}
@@ -137,6 +137,8 @@ export default function About() {
           </div>
         </div>
       </div>
+
+      <div className="w-full h-px bg-[#1E1E1E]" />
     </section>
   );
 }

@@ -205,45 +205,44 @@ export default function Projects() {
     <section
       id="proyectos"
       ref={ref}
-      className="relative py-32 lg:py-48 bg-[#0E0E0E] overflow-hidden"
+      className="relative w-full bg-[#111111] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
-          <div>
-            <motion.div
-              className="section-tag mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              — Portafolio
-            </motion.div>
-            <motion.h2
-              className="font-display text-6xl lg:text-8xl text-[#F0EDE8] leading-none"
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-              PROYECTOS
-            </motion.h2>
-          </div>
-          <motion.div
-            className="flex items-center gap-4"
+      <div className="w-full h-px bg-[#1E1E1E]" />
+      <div className="w-24 h-px bg-[#C41E1E]" />
+
+      <div className="max-w-6xl mx-auto px-8 lg:px-16 py-28 lg:py-40">
+        {/* Section entry */}
+        <motion.div
+          className="flex items-center gap-6 mb-20"
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="section-num">03</span>
+          <span className="section-tag">Portafolio</span>
+          <div className="section-line" />
+          <motion.span
+            className="text-[#333] text-xs font-mono whitespace-nowrap"
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            transition={{ delay: 0.3 }}
           >
-            <span className="text-[#888] text-sm">
-              {projects.length} proyectos
-            </span>
-            <span className="w-1 h-1 rounded-full bg-[#C41E1E]" />
-            <span className="text-[#888] text-sm">2023–2024</span>
-          </motion.div>
-        </div>
+            {projects.length} proyectos · 2023–2024
+          </motion.span>
+        </motion.div>
+
+        {/* Title */}
+        <motion.h2
+          className="font-display text-5xl lg:text-7xl text-[#F0EDE8] leading-none mb-16"
+          initial={{ opacity: 0, y: 32 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          PROYECTOS
+        </motion.h2>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-px bg-[#2A2A2A]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-px bg-[#1A1A1A]">
           {projects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} inView={inView} />
           ))}
@@ -251,12 +250,12 @@ export default function Projects() {
 
         {/* Bottom CTA */}
         <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-20 flex flex-col items-center gap-4"
+          initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          <p className="text-[#888] text-sm mb-6">¿Tienes un proyecto en mente?</p>
+          <p className="text-[#444] text-sm tracking-wide">¿Tienes un proyecto en mente?</p>
           <button
             onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
             className="btn-primary"
@@ -265,6 +264,8 @@ export default function Projects() {
           </button>
         </motion.div>
       </div>
+
+      <div className="w-full h-px bg-[#1E1E1E]" />
     </section>
   );
 }
