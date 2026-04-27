@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import Cursor from "@/components/Cursor";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,7 +32,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${inter.variable} ${bebasNeue.variable}`}>
-      <body className="noise-bg">
+      <body className="noise">
+        <Cursor />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

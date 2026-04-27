@@ -5,100 +5,94 @@ import { useRef } from "react";
 interface Props {
   number: string;
   title: string;
-  bgFrom?: string;
-  bgTo?: string;
+  variant?: "dark" | "red";
 }
 
-export default function SectionDivider({ number, title }: Props) {
+export default function SectionDivider({ number, title, variant = "dark" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10%" });
+  const inView = useInView(ref, { once: true, margin: "-5%" });
+
+  const isRed = variant === "red";
+  const bg = isRed ? "#C41E1E" : "#080808";
+  const titleColor = isRed ? "#F0EDE8" : "#F0EDE8";
+  const numColor = isRed ? "rgba(255,255,255,0.08)" : "rgba(240,237,232,0.025)";
+  const lineColor = isRed ? "rgba(255,255,255,0.15)" : "#141414";
+  const tagColor = isRed ? "rgba(255,255,255,0.5)" : "#333";
+  const dotColor = isRed ? "rgba(255,255,255,0.6)" : "#C41E1E";
 
   return (
-    <div
-      ref={ref}
-      className="relative w-full overflow-hidden"
-      style={{ background: "#080808" }}
-    >
+    <div ref={ref} className="relative w-full overflow-hidden" style={{ background: bg }}>
+
       {/* Giant ghost number */}
-      <div
-        className="absolute inset-0 flex items-center pointer-events-none select-none"
-        aria-hidden="true"
-      >
+      <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none" aria-hidden="true">
         <span
-          className="font-display leading-none text-[#F0EDE8]"
-          style={{ fontSize: "clamp(120px, 22vw, 320px)", opacity: 0.025, marginLeft: "-0.04em" }}
+          className="font-display leading-none"
+          style={{ fontSize: "clamp(180px, 28vw, 420px)", color: numColor, marginLeft: "-0.02em", lineHeight: 1 }}
         >
           {number}
         </span>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 px-8 lg:px-16 py-20 lg:py-28 flex flex-col gap-8">
+      <div className="relative z-10 px-8 lg:px-16 xl:px-24 py-16 lg:py-24">
 
-        {/* Top thin line */}
+        {/* Top line */}
         <motion.div
-          className="h-px bg-[#1A1A1A] w-full"
-          initial={{ scaleX: 0, originX: 0 }}
+          className="h-px w-full mb-8"
+          style={{ background: lineColor, transformOrigin: "left", scaleX: 0 }}
           animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformOrigin: "left" }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         />
 
-        {/* Section label row */}
-        <div className="flex items-center justify-between">
-          <motion.div
-            className="flex items-center gap-5"
-            initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.6 }}
+        {/* Label row */}
+        <motion.div
+          className="flex items-center gap-4 mb-6"
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <span
+            className="font-display leading-none"
+            style={{ fontSize: "0.85rem", letterSpacing: "0.25em", color: dotColor }}
           >
-            <span
-              className="font-display text-[#C41E1E] leading-none"
-              style={{ fontSize: "clamp(14px, 1.2vw, 18px)", letterSpacing: "0.2em" }}
-            >
-              {number}
-            </span>
-            <span className="w-8 h-px bg-[#C41E1E]" />
-            <span
-              className="font-display text-[#F0EDE8] leading-none"
-              style={{ fontSize: "clamp(14px, 1.2vw, 18px)", letterSpacing: "0.25em" }}
-            >
-              {title}
-            </span>
-          </motion.div>
+            {number}
+          </span>
+          <span className="w-6 h-px flex-shrink-0" style={{ background: dotColor }} />
+          <span
+            className="font-display leading-none"
+            style={{ fontSize: "0.85rem", letterSpacing: "0.25em", color: tagColor }}
+          >
+            {title}
+          </span>
+        </motion.div>
 
-          <motion.div
-            className="h-px bg-[#1A1A1A]"
-            style={{ width: "45%" }}
-            initial={{ scaleX: 0, originX: 1 }}
-            animate={inView ? { scaleX: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          />
-        </div>
-
-        {/* The BIG section title */}
+        {/* BIG title reveal */}
         <div className="overflow-hidden">
           <motion.h2
-            className="font-display text-[#F0EDE8] leading-none"
+            className="font-display leading-none"
             style={{
-              fontSize: "clamp(52px, 10vw, 140px)",
-              letterSpacing: "0.015em",
+              fontSize: "clamp(56px, 11vw, 160px)",
+              color: titleColor,
+              letterSpacing: "0.01em",
             }}
             initial={{ y: "105%" }}
             animate={inView ? { y: "0%" } : {}}
-            transition={{ delay: 0.15, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
             {title}
           </motion.h2>
         </div>
 
-        {/* Bottom red accent line */}
+        {/* Red accent bar */}
         <motion.div
-          className="h-px"
-          style={{ background: "#C41E1E", width: 80 }}
-          initial={{ scaleX: 0, originX: 0 }}
+          className="h-px mt-8"
+          style={{
+            background: isRed ? "rgba(255,255,255,0.3)" : "#C41E1E",
+            width: 64,
+            transformOrigin: "left",
+            scaleX: 0,
+          }}
           animate={inView ? { scaleX: 1 } : {}}
-          transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.55, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         />
       </div>
     </div>

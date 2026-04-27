@@ -1,28 +1,22 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const subtitle = ["ARQUITECTURA", "DISEÑO", "CONSTRUCCIÓN"];
-
-function SplitText({ text, delay = 0 }: { text: string; delay?: number }) {
+function SplitText({ text, delay = 0, className = "" }: { text: string; delay?: number; className?: string }) {
   return (
-    <>
+    <span className={`inline-block overflow-hidden ${className}`}>
       {text.split("").map((char, i) => (
         <motion.span
           key={i}
           className="inline-block"
-          initial={{ y: "110%", opacity: 0 }}
+          initial={{ y: "105%", opacity: 0 }}
           animate={{ y: "0%", opacity: 1 }}
-          transition={{
-            duration: 0.75,
-            delay: delay + i * 0.055,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          transition={{ duration: 0.9, delay: delay + i * 0.055, ease: [0.22, 1, 0.36, 1] }}
         >
           {char}
         </motion.span>
       ))}
-    </>
+    </span>
   );
 }
 
@@ -33,150 +27,120 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#0A0A0A]"
+      className="relative min-h-screen w-full flex flex-col overflow-hidden bg-[#0C0C0C]"
     >
-      {/* Subtle grid */}
-      <div className="absolute inset-0 grid-pattern" />
+      {/* Grid */}
+      <div className="absolute inset-0 grid-pattern pointer-events-none" />
 
-      {/* Vertical accent lines — contained, no overflow */}
-      <div
-        className="absolute top-0 right-[8%] w-px h-full opacity-15 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent 0%, #C41E1E 40%, transparent 100%)" }}
-      />
-      <div
-        className="absolute top-0 left-[8%] w-px h-full opacity-08 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent 0%, #C41E1E 30%, transparent 100%)" }}
-      />
+      {/* Red ambient glow — center */}
+      <div className="absolute inset-0 red-glow pointer-events-none" />
 
-      {/* Animated geometric accents */}
-      <motion.div
-        className="absolute top-1/4 right-[8%] w-px h-24 bg-[#C41E1E] origin-top"
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: 1 }}
-        transition={{ delay: 1.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      />
-      <motion.div
-        className="absolute bottom-1/3 left-[8%] h-px w-14 bg-[#C41E1E] origin-left"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 1.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      />
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-[#161616]" />
 
-      {/* ── Main content ─────────────────────────────── */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-8 lg:px-16 text-center">
+      {/* Vertical accent lines */}
+      <div className="absolute top-0 left-[8vw] w-px h-full opacity-[0.08] pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #C41E1E 40%, transparent)" }} />
+      <div className="absolute top-0 right-[8vw] w-px h-full opacity-[0.08] pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #C41E1E 40%, transparent)" }} />
 
-        {/* Label */}
+      {/* ── Content — vertically centered, lots of top/bottom room ── */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 text-center pt-32 pb-32">
+
+        {/* Eyebrow */}
         <motion.div
-          className="flex items-center justify-center gap-4 mb-10"
+          className="flex items-center gap-5 mb-12"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{ delay: 0.2, duration: 0.7 }}
         >
-          <span className="red-line" />
-          <span className="section-tag">Estudio de Arquitectura</span>
-          <span className="red-line" />
+          <span className="w-8 h-px bg-[#C41E1E] block" />
+          <span className="section-tag">Estudio de Arquitectura · Colombia</span>
+          <span className="w-8 h-px bg-[#C41E1E] block" />
         </motion.div>
 
-        {/* Title — overflow-hidden clips the SplitText animation correctly */}
-        <div className="overflow-hidden leading-none mb-6">
-          <h1 className="font-display text-[22vw] sm:text-[18vw] md:text-[16vw] lg:text-[14vw] xl:text-[12vw] leading-none text-[#F0EDE8] tracking-[0.03em]">
-            {loaded && <SplitText text="ARKEIM" delay={0.4} />}
+        {/* Main wordmark — full viewport width */}
+        <div className="w-full overflow-hidden leading-none mb-6">
+          <h1
+            className="font-display text-[#F0EDE8] leading-[0.88]"
+            style={{ fontSize: "clamp(72px, 19vw, 260px)", letterSpacing: "0.01em" }}
+          >
+            {loaded && <SplitText text="ARKEIM" delay={0.35} />}
           </h1>
         </div>
 
-        {/* Red rule */}
+        {/* Tagline — between the title and subtitle */}
         <motion.div
-          className="flex justify-center mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1 }}
+          className="flex justify-center mb-10"
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ delay: 1.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          style={{ originX: 0.5 }}
         >
-          <motion.div
-            className="h-px bg-[#C41E1E]"
-            initial={{ width: 0 }}
-            animate={{ width: 100 }}
-            transition={{ delay: 1.2, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          />
+          <div className="h-px bg-[#C41E1E] w-24" />
         </motion.div>
 
-        {/* Subtitle pills */}
-        <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-2 mb-12">
-          {subtitle.map((word, i) => (
-            <motion.span
-              key={word}
-              className="text-[0.65rem] font-bold tracking-[0.3em] text-[#666]"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.35 + i * 0.1, duration: 0.5 }}
-            >
-              {word}
-              {i < subtitle.length - 1 && (
-                <span className="ml-6 text-[#C41E1E] opacity-60">·</span>
-              )}
-            </motion.span>
-          ))}
-        </div>
-
-        {/* Tagline */}
         <motion.p
-          className="text-sm text-[#555] mb-12 tracking-wide"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.65, duration: 0.6 }}
+          className="text-[#444] text-xs tracking-[0.35em] uppercase mb-14 font-semibold"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3, duration: 0.7 }}
         >
-          Arquitectura con criterio.{" "}
-          <span className="text-[#999]">Proyectos que se construyen.</span>
+          Arquitectura &nbsp;·&nbsp; Diseño &nbsp;·&nbsp; Construcción
+        </motion.p>
+
+        {/* Statement */}
+        <motion.p
+          className="text-[#666] text-sm lg:text-base leading-[1.85] max-w-lg mb-14 font-light"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.7 }}
+        >
+          Cada proyecto parte de un análisis técnico riguroso.{" "}
+          <span className="text-[#999]">Lo que diseñamos, puede construirse.</span>
         </motion.p>
 
         {/* CTAs */}
         <motion.div
-          className="flex items-center justify-center gap-4 flex-wrap"
-          initial={{ opacity: 0, y: 16 }}
+          className="flex items-center gap-5 flex-wrap justify-center"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.85, duration: 0.6 }}
+          transition={{ delay: 1.7, duration: 0.6 }}
         >
-          <button
-            onClick={() => document.querySelector("#proyectos")?.scrollIntoView({ behavior: "smooth" })}
-            className="btn-primary"
-          >
+          <button onClick={() => document.querySelector("#proyectos")?.scrollIntoView({ behavior: "smooth" })}
+            className="btn-primary">
             Ver Proyectos
           </button>
-          <button
-            onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
-            className="btn-outline"
-          >
+          <button onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
+            className="btn-outline">
             Evaluar Proyecto
           </button>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.3, duration: 0.6 }}
-      >
-        <div
-          className="w-px h-10 bg-[#C41E1E] scroll-indicator-dot"
-          aria-hidden="true"
-        />
-        <span className="section-tag" style={{ fontSize: "0.55rem" }}>Scroll</span>
-      </motion.div>
+      {/* ── Bottom bar: scroll + metadata ── */}
+      <div className="absolute bottom-0 left-0 right-0 border-t border-[#141414]">
+        <div className="flex items-stretch">
 
-      {/* Corner metadata */}
-      <motion.span
-        className="absolute bottom-10 right-8 text-[#252525] text-[0.55rem] font-mono tracking-widest hidden lg:block"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.1 }}
-      >
-        4.7110°N · 74.0721°W
-      </motion.span>
-      <motion.span
-        className="absolute bottom-10 left-8 text-[#252525] text-[0.55rem] font-mono tracking-widest hidden lg:block"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.1 }}
-      >
-        COL · EST. 2024
-      </motion.span>
+          {/* Left: coordinates */}
+          <div className="flex items-center px-8 py-5 border-r border-[#141414]">
+            <span className="text-[#222] text-[0.58rem] font-mono tracking-[0.2em]">4.7110°N · 74.0721°W</span>
+          </div>
+
+          {/* Center: scroll indicator */}
+          <div className="flex-1 flex items-center justify-center gap-4 py-5">
+            <div className="w-px h-7 bg-[#1E1E1E] relative overflow-hidden">
+              <div className="w-full bg-[#C41E1E] h-1/2 scroll-indicator-dot absolute top-0 left-0" />
+            </div>
+            <span className="text-[#222] text-[0.58rem] tracking-[0.3em] uppercase font-bold">Scroll</span>
+          </div>
+
+          {/* Right: year */}
+          <div className="flex items-center px-8 py-5 border-l border-[#141414]">
+            <span className="text-[#222] text-[0.58rem] font-mono tracking-[0.2em]">EST. 2024 · COL</span>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
