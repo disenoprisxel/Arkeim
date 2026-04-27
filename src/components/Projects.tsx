@@ -2,260 +2,286 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 
+const featured = {
+  id: 0,
+  title: "Residencia Belén",
+  category: "Arquitectura Residencial",
+  year: "2024",
+  location: "Medellín, Antioquia",
+  description: "Vivienda unifamiliar de 3 plantas con diseño contemporáneo que integra espacios abiertos, luz natural y áreas verdes. Premio proyecto viable 2024.",
+};
+
 const projects = [
   {
     id: 1,
-    title: "Residencia Belén",
-    category: "Arquitectura Residencial",
+    title: "Oficinas Zona Norte",
+    category: "Corporativo",
     year: "2024",
-    location: "Medellín, Antioquia",
-    description: "Vivienda unifamiliar de 3 plantas con diseño contemporáneo que integra espacios abiertos y áreas verdes.",
-    color: "#1A1A1A",
-    accentColor: "#C41E1E",
-    size: "large",
-    tags: ["Residencial", "Diseño", "Construcción"],
+    location: "Bogotá, D.C.",
+    tags: ["Corporativo", "Interior"],
   },
   {
     id: 2,
-    title: "Oficinas Zona Norte",
-    category: "Arquitectura Corporativa",
-    year: "2024",
-    location: "Bogotá, D.C.",
-    description: "Espacios de trabajo flexibles de 800m² diseñados para maximizar la productividad y el bienestar.",
-    color: "#161616",
-    accentColor: "#8B0000",
-    size: "small",
-    tags: ["Corporativo", "Diseño Interior"],
-  },
-  {
-    id: 3,
     title: "Conjunto El Nogal",
-    category: "Urbanismo Residencial",
+    category: "Multifamiliar",
     year: "2023",
     location: "Chía, Cundinamarca",
-    description: "Conjunto cerrado de 24 unidades con áreas comunes diseñadas para fomentar comunidad.",
-    color: "#131313",
-    accentColor: "#C41E1E",
-    size: "small",
     tags: ["Multifamiliar", "Planeación"],
   },
   {
-    id: 4,
+    id: 3,
     title: "Centro Comercial Parque",
-    category: "Arquitectura Comercial",
+    category: "Comercial",
     year: "2023",
-    location: "Cali, Valle del Cauca",
-    description: "Proyecto de renovación y ampliación de espacio comercial con énfasis en experiencia del usuario.",
-    color: "#181818",
-    accentColor: "#8B0000",
-    size: "large",
+    location: "Cali, Valle",
     tags: ["Comercial", "Renovación"],
   },
   {
-    id: 5,
+    id: 4,
     title: "Casa de Campo",
-    category: "Arquitectura Rural",
+    category: "Rural",
     year: "2023",
     location: "Villa de Leyva, Boyacá",
-    description: "Residencia de descanso que integra materiales vernáculos con un programa espacial contemporáneo.",
-    color: "#141414",
-    accentColor: "#C41E1E",
-    size: "small",
     tags: ["Residencial", "Rural"],
   },
   {
-    id: 6,
-    title: "Clínica Dental Premium",
-    category: "Arquitectura Hospitalaria",
+    id: 5,
+    title: "Clínica Dental",
+    category: "Hospitalario",
     year: "2024",
     location: "Bucaramanga, Santander",
-    description: "Diseño especializado para consultorio dental con estándares de higiene y confort superiores.",
-    color: "#111",
-    accentColor: "#8B0000",
-    size: "small",
     tags: ["Salud", "Interior"],
   },
 ];
 
-function ProjectCard({ project, index, inView }: {
+// Geometric SVG patterns per project
+const patterns = [
+  // circles
+  <svg key="a" viewBox="0 0 400 300" className="absolute inset-0 w-full h-full opacity-[0.07]" preserveAspectRatio="xMidYMid slice">
+    <circle cx="200" cy="150" r="100" stroke="#C41E1E" strokeWidth="0.6" fill="none"/>
+    <circle cx="200" cy="150" r="150" stroke="#C41E1E" strokeWidth="0.4" fill="none"/>
+    <circle cx="200" cy="150" r="200" stroke="#C41E1E" strokeWidth="0.3" fill="none"/>
+    <line x1="0" y1="150" x2="400" y2="150" stroke="#C41E1E" strokeWidth="0.4"/>
+    <line x1="200" y1="0" x2="200" y2="300" stroke="#C41E1E" strokeWidth="0.4"/>
+  </svg>,
+  // grid
+  <svg key="b" viewBox="0 0 400 300" className="absolute inset-0 w-full h-full opacity-[0.07]" preserveAspectRatio="xMidYMid slice">
+    {[0,80,160,240,320,400].map(x => <line key={x} x1={x} y1="0" x2={x} y2="300" stroke="#C41E1E" strokeWidth="0.4"/>)}
+    {[0,75,150,225,300].map(y => <line key={y} x1="0" y1={y} x2="400" y2={y} stroke="#C41E1E" strokeWidth="0.4"/>)}
+  </svg>,
+  // triangles
+  <svg key="c" viewBox="0 0 400 300" className="absolute inset-0 w-full h-full opacity-[0.07]" preserveAspectRatio="xMidYMid slice">
+    <polygon points="200,20 380,280 20,280" stroke="#C41E1E" strokeWidth="0.6" fill="none"/>
+    <polygon points="200,60 340,260 60,260" stroke="#C41E1E" strokeWidth="0.4" fill="none"/>
+    <polygon points="200,100 300,240 100,240" stroke="#C41E1E" strokeWidth="0.3" fill="none"/>
+  </svg>,
+  // diagonals
+  <svg key="d" viewBox="0 0 400 300" className="absolute inset-0 w-full h-full opacity-[0.07]" preserveAspectRatio="xMidYMid slice">
+    {[-200,-100,0,100,200,300,400].map((x,i) => <line key={i} x1={x} y1="0" x2={x+300} y2="300" stroke="#C41E1E" strokeWidth="0.4"/>)}
+    {[-200,-100,0,100,200,300,400].map((x,i) => <line key={`r${i}`} x1={x+300} y1="0" x2={x} y2="300" stroke="#C41E1E" strokeWidth="0.25"/>)}
+  </svg>,
+  // concentric squares
+  <svg key="e" viewBox="0 0 400 300" className="absolute inset-0 w-full h-full opacity-[0.07]" preserveAspectRatio="xMidYMid slice">
+    {[10,40,70,100,130].map((p,i) => <rect key={i} x={p} y={p*0.75} width={400-p*2} height={300-p*1.5} stroke="#C41E1E" strokeWidth="0.4" fill="none"/>)}
+  </svg>,
+];
+
+function SmallCard({ project, index, inView }: {
   project: typeof projects[0];
   index: number;
   inView: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const isLarge = project.size === "large";
 
   return (
-    <motion.div
-      className={`relative overflow-hidden cursor-pointer group ${isLarge ? "lg:row-span-2" : ""}`}
-      style={{ minHeight: isLarge ? "520px" : "260px" }}
-      initial={{ opacity: 0, y: 60 }}
+    <motion.article
+      className="group relative overflow-hidden cursor-pointer"
+      style={{ minHeight: 260, background: "#0D0D0D" }}
+      initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: 0.1 + index * 0.1, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ delay: 0.25 + index * 0.1, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Background pattern */}
-      <div
-        className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-        style={{ backgroundColor: project.color }}
-      >
-        {/* Geometric pattern unique to each project */}
-        <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-          {index % 2 === 0 ? (
-            <>
-              <line x1="0" y1="0" x2="400" y2="300" stroke={project.accentColor} strokeWidth="0.5" />
-              <line x1="0" y1="150" x2="400" y2="0" stroke={project.accentColor} strokeWidth="0.5" />
-              <circle cx="200" cy="150" r="80" stroke={project.accentColor} strokeWidth="0.5" fill="none" />
-              <circle cx="200" cy="150" r="120" stroke={project.accentColor} strokeWidth="0.3" fill="none" />
-            </>
-          ) : index % 3 === 0 ? (
-            <>
-              <rect x="50" y="50" width="300" height="200" stroke={project.accentColor} strokeWidth="0.5" fill="none" />
-              <rect x="100" y="80" width="200" height="140" stroke={project.accentColor} strokeWidth="0.5" fill="none" />
-              <line x1="200" y1="0" x2="200" y2="300" stroke={project.accentColor} strokeWidth="0.3" />
-            </>
-          ) : (
-            <>
-              <polygon points="200,30 370,270 30,270" stroke={project.accentColor} strokeWidth="0.5" fill="none" />
-              <polygon points="200,80 310,250 90,250" stroke={project.accentColor} strokeWidth="0.5" fill="none" />
-              <polygon points="200,130 250,230 150,230" stroke={project.accentColor} strokeWidth="0.5" fill="none" />
-            </>
-          )}
-        </svg>
+      {/* Pattern background */}
+      {patterns[index % patterns.length]}
 
-        {/* Year watermark */}
-        <div className="absolute top-6 right-6 font-display text-8xl text-[#F0EDE8] opacity-[0.04] leading-none select-none">
-          {project.year}
-        </div>
-      </div>
+      {/* Hover overlay */}
+      <motion.div
+        className="absolute inset-0 bg-[#C41E1E]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: hovered ? 0.05 : 0 }}
+        transition={{ duration: 0.4 }}
+      />
 
-      {/* Gradient overlay */}
+      {/* Bottom gradient */}
       <div className="absolute inset-0 project-card-overlay" />
 
-      {/* Border accent on hover */}
+      {/* Border */}
       <motion.div
         className="absolute inset-0 border border-[#C41E1E] pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: hovered ? 1 : 0 }}
+        animate={{ opacity: hovered ? 0.5 : 0 }}
         transition={{ duration: 0.3 }}
       />
 
-      {/* Top badge */}
-      <div className="absolute top-6 left-6 z-10">
-        <span className="inline-block px-2 py-1 bg-[#C41E1E] text-white text-[0.6rem] font-semibold tracking-[0.15em] uppercase">
-          {project.category}
-        </span>
-      </div>
-
       {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 z-10">
-        <div className="flex items-end justify-between">
-          <div>
-            <motion.div
-              className="text-[#888] text-xs tracking-widest mb-2 font-mono"
-              animate={{ opacity: hovered ? 1 : 0.6 }}
-            >
-              {project.location} — {project.year}
-            </motion.div>
-            <h3 className={`font-display text-[#F0EDE8] leading-tight mb-3 ${isLarge ? "text-4xl lg:text-5xl" : "text-3xl"}`}>
-              {project.title}
-            </h3>
-            <AnimatePresence>
-              {hovered && (
-                <motion.p
-                  className="text-[#AAA] text-xs leading-relaxed max-w-xs mb-4"
-                  initial={{ opacity: 0, y: 10, height: 0 }}
-                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                  exit={{ opacity: 0, y: 10, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {project.description}
-                </motion.p>
-              )}
-            </AnimatePresence>
-            <div className="flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span key={tag} className="text-[0.6rem] font-medium tracking-widest text-[#666] uppercase">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-          <motion.div
-            className="flex-shrink-0 w-8 h-8 border border-[#C41E1E] flex items-center justify-center"
-            animate={{ rotate: hovered ? 45 : 0, scale: hovered ? 1.1 : 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <svg viewBox="0 0 10 10" className="w-3 h-3" fill="none">
-              <path d="M2 8 L8 2 M3 2 H8 V7" stroke="#C41E1E" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-          </motion.div>
+      <div className="absolute bottom-0 left-0 right-0 p-6">
+        <div className="text-[#333] text-[0.6rem] font-mono tracking-widest mb-2">
+          {project.location} · {project.year}
+        </div>
+        <h3
+          className="font-display text-[#F0EDE8] leading-tight mb-3"
+          style={{ fontSize: "clamp(22px, 3vw, 32px)" }}
+        >
+          {project.title}
+        </h3>
+        <div className="flex items-center justify-between">
+          <span className="text-[0.6rem] tracking-[0.2em] uppercase text-[#C41E1E] font-semibold">
+            {project.category}
+          </span>
+          <AnimatePresence>
+            {hovered && (
+              <motion.svg
+                viewBox="0 0 16 16"
+                className="w-4 h-4 text-[#C41E1E]"
+                fill="none"
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -6 }}
+                transition={{ duration: 0.2 }}
+              >
+                <path d="M3 13 L13 3 M6 3 H13 V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </motion.svg>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-    </motion.div>
+
+      {/* Top-right tag */}
+      <div className="absolute top-5 right-5">
+        <span className="text-[0.55rem] font-bold tracking-[0.2em] text-[#1E1E1E] uppercase">
+          {String(index + 2).padStart(2, "0")}
+        </span>
+      </div>
+    </motion.article>
   );
 }
 
 export default function Projects() {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10%" });
+  const inView = useInView(ref, { once: true, margin: "-8%" });
+  const [featuredHovered, setFeaturedHovered] = useState(false);
 
   return (
     <section
       id="proyectos"
       ref={ref}
-      className="relative w-full bg-[#111111] overflow-hidden"
+      className="relative w-full bg-[#0E0E0E] overflow-hidden"
     >
-      <div className="w-full h-px bg-[#1E1E1E]" />
-      <div className="w-24 h-px bg-[#C41E1E]" />
+      <div className="px-8 lg:px-16 xl:px-20 py-24 lg:py-40">
 
-      <div className="max-w-6xl mx-auto px-8 lg:px-16 py-28 lg:py-40">
-        {/* Section entry */}
-        <motion.div
-          className="flex items-center gap-6 mb-20"
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="section-num">03</span>
-          <span className="section-tag">Portafolio</span>
-          <div className="section-line" />
-          <motion.span
-            className="text-[#333] text-xs font-mono whitespace-nowrap"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-          >
-            {projects.length} proyectos · 2023–2024
-          </motion.span>
-        </motion.div>
-
-        {/* Title */}
-        <motion.h2
-          className="font-display text-5xl lg:text-7xl text-[#F0EDE8] leading-none mb-16"
+        {/* ── Featured project — full width, tall ── */}
+        <motion.article
+          className="relative w-full overflow-hidden cursor-pointer mb-3"
+          style={{ minHeight: "clamp(300px, 45vh, 520px)", background: "#0D0D0D" }}
           initial={{ opacity: 0, y: 32 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          onMouseEnter={() => setFeaturedHovered(true)}
+          onMouseLeave={() => setFeaturedHovered(false)}
         >
-          PROYECTOS
-        </motion.h2>
+          {/* Large pattern */}
+          <svg viewBox="0 0 1200 520" className="absolute inset-0 w-full h-full opacity-[0.06]" preserveAspectRatio="xMidYMid slice">
+            <circle cx="600" cy="260" r="200" stroke="#C41E1E" strokeWidth="0.8" fill="none"/>
+            <circle cx="600" cy="260" r="320" stroke="#C41E1E" strokeWidth="0.5" fill="none"/>
+            <circle cx="600" cy="260" r="450" stroke="#C41E1E" strokeWidth="0.3" fill="none"/>
+            <line x1="0" y1="260" x2="1200" y2="260" stroke="#C41E1E" strokeWidth="0.5"/>
+            <line x1="600" y1="0" x2="600" y2="520" stroke="#C41E1E" strokeWidth="0.5"/>
+            <line x1="0" y1="0" x2="1200" y2="520" stroke="#C41E1E" strokeWidth="0.3"/>
+          </svg>
 
-        {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-px bg-[#1A1A1A]">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} inView={inView} />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 project-card-overlay" />
+
+          {/* Red border on hover */}
+          <motion.div
+            className="absolute inset-0 border border-[#C41E1E] pointer-events-none"
+            animate={{ opacity: featuredHovered ? 0.6 : 0 }}
+            transition={{ duration: 0.4 }}
+          />
+
+          {/* Year watermark */}
+          <div className="absolute top-8 right-10 font-display text-[#F0EDE8] opacity-[0.04] leading-none select-none"
+            style={{ fontSize: "clamp(80px, 14vw, 200px)" }}>
+            2024
+          </div>
+
+          {/* Badge */}
+          <div className="absolute top-8 left-8">
+            <span className="inline-block bg-[#C41E1E] text-white text-[0.6rem] font-bold tracking-[0.2em] uppercase px-3 py-1.5">
+              Proyecto Destacado · 01
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12 flex items-end justify-between">
+            <div>
+              <div className="text-[#444] text-xs font-mono tracking-widest mb-3">
+                {featured.location} · {featured.year}
+              </div>
+              <h3
+                className="font-display text-[#F0EDE8] leading-none mb-4"
+                style={{ fontSize: "clamp(36px, 6vw, 88px)" }}
+              >
+                {featured.title}
+              </h3>
+              <AnimatePresence>
+                {featuredHovered && (
+                  <motion.p
+                    className="text-[#888] text-sm max-w-lg leading-relaxed mb-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {featured.description}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+              <span className="text-[0.65rem] font-bold tracking-[0.25em] text-[#C41E1E] uppercase">
+                {featured.category}
+              </span>
+            </div>
+            <motion.div
+              className="flex-shrink-0 w-10 h-10 border border-[#C41E1E] flex items-center justify-center text-[#C41E1E] self-end"
+              animate={{ rotate: featuredHovered ? 45 : 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <svg viewBox="0 0 12 12" fill="none" className="w-3 h-3">
+                <path d="M2 10 L10 2 M4 2 H10 V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </motion.div>
+          </div>
+        </motion.article>
+
+        {/* ── Small cards grid ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+          {projects.map((p, i) => (
+            <SmallCard key={p.id} project={p} index={i} inView={inView} />
           ))}
         </div>
 
-        {/* Bottom CTA */}
+        {/* ── Bottom row: count + CTA ── */}
         <motion.div
-          className="mt-20 flex flex-col items-center gap-4"
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          className="mt-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-t border-[#161616] pt-10"
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.9, duration: 0.6 }}
         >
-          <p className="text-[#444] text-sm tracking-wide">¿Tienes un proyecto en mente?</p>
+          <div>
+            <span className="font-display text-[#C41E1E] text-lg tracking-widest">06</span>
+            <span className="text-[#222] text-xs tracking-widest ml-3">PROYECTOS · 2023–2024</span>
+          </div>
           <button
             onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
             className="btn-primary"
@@ -264,8 +290,6 @@ export default function Projects() {
           </button>
         </motion.div>
       </div>
-
-      <div className="w-full h-px bg-[#1E1E1E]" />
     </section>
   );
 }
